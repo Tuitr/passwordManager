@@ -26,15 +26,3 @@ def ask(prompt):
 
 def pause():
     input("\nНажмите Enter, чтобы продолжить...")
-
-
-def printUsers(users):
-    if not users:
-        info("Пользователи не найдены")
-        return
-
-    print(f"{'Логин':<20}{'Роль':<10}{'Дата регистрации'}")
-    print("-" * 50)
-    for user in users:
-        print(f"{user.login:<20}{user.role:<10}{user.createdAt}")
-
