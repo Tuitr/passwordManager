@@ -23,3 +23,17 @@ class User:
     @classmethod
     def fromDict(cls, data):
         return cls(data["login"], data["password"], data.get("role", ROLE_USER), data.get("createdAt"))
+
+
+class Entry:
+    def __init__(self, name, login, password):
+        self.name = name
+        self.login = login
+        self.password = password
+
+    def toDict(self):
+        return {"name": self.name, "login": self.login, "password": self.password}
+
+    @classmethod
+    def fromDict(cls, data):
+        return cls(data["name"], data["login"], data["password"])
