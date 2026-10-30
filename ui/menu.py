@@ -2,6 +2,80 @@ from errors import PassmanError
 from security import generate_password
 from ui.console import clear, info, success, error, ask, pause
 from ui.password_input import inputPassword
+from config import GENERATED_PASSWORD_LENGTH
+
+class StartMenu:
+    def __init__(self, manager):
+        self.manager = manager
+
+    def show(self):
+        while True:
+            clear()
+            info("=== Менеджер паролей ===")
+            info("1. Создать хранилище")
+            info("2. Войти")
+            info("3. Сгенерировать пароль")
+            info("0. Выход")
+            choice = ask("Выберите пункт: ")
+            match choice:
+                case "1":
+                    self._init()
+                case "2":
+                    self._unlock()
+                case "3":
+                    self._generate()
+                case "0":
+                    info("До свидания!")
+                    return
+                case _:
+                    error("Нет такого пункта")
+                    pause()
+
+    def _init(self):
+        clear()
+        info("=== Создание хранилища ===")
+        password = inputPassword("Введите мастер пароль: ")
+        password_check = inputPassword("Введите мастер пароль повторно: ")
+        if password != password_check:
+            error("Пароли не совпадают")
+            pause()
+            return
+        try:
+            self.manager.init_master(password)
+            success("Хранилище создано!")
+        except PassmanError as e:
+            error(str(e))
+        pause()
+
+
+    def _unlock(self):
+        clear()
+        info("=== Вход ===")
+        try:
+            master_password = inputPassword("Введите мастер пароль: ")
+            if self.manager.unlock(master_password):
+                VaultMenu(self.manager).show()
+            else:
+                error("Неверный мастер пароль!")
+                pause()
+        except PassmanError as e:
+            error(str(e))
+            pause()
+
+    def _generate(self):
+        clear()
+        info("=== Генератор паролей ===")
+        text = ask(f"Длина (Enter — {GENERATED_PASSWORD_LENGTH}): ")
+        try:
+            if not text:
+                length = GENERATED_PASSWORD_LENGTH
+            else:
+                length = int(text)
+            info(f"Пароль: {generate_password(length)}")
+        except ValueError:
+            error("Введите целое число не меньше 4")
+        pause()
+
 
 class VaultMenu:
     def __init__(self, manager):
@@ -92,7 +166,7 @@ class VaultMenu:
             return
         try:
             self.manager.delete_entry(name)
-            success("Запись успешно удалена!")
+            success("Запись удалена нахуй!")
         except PassmanError as e:
             error(str(e))
         pause()

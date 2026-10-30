@@ -52,7 +52,7 @@ class PasswordManager:
 
     def unlock(self, password):
         if not self.is_initialized():
-            raise VaultNotInitializedError("Хранилище не создано, выполните --init")
+            raise VaultNotInitializedError("Хранилище не создано, сначала создайте его")
         data = self._load()
         master = data["master"]
         if not verify_password(password, master["salt"], master["password_hash"]):
