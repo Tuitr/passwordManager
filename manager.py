@@ -1,9 +1,13 @@
 import json
 
+from cryptography.fernet import InvalidToken
+
 from config import VAULT_FILE, MIN_MASTER_LENGTH
 from errors import (ValidationError, MasterExistsError, VaultNotInitializedError,
-                    VaultLockedError, VaultCorruptedError)
-from security import hash_password, verify_password, generate_salt, derive_key
+                    VaultLockedError, VaultCorruptedError,
+                    EntryExistsError, EntryNotFoundError)
+from models import Entry
+from security import hash_password, verify_password, generate_salt, derive_key, encrypt, decrypt
 
 REQUIRED_KEYS = ("master", "key_salt", "entries")
 
@@ -63,3 +67,40 @@ class PasswordManager:
     def _require_unlocked(self):
         if self._key is None:
             raise VaultLockedError("Хранилище заблокировано")
+
+    def add_entry(self, name, login, pwd):
+        self._require_unlocked()
+        name = name.strip()
+        if not name or not pwd:
+            raise ValidationError("Название и пароль не могут быть пустыми")
+        data = self._load()
+        if name in data["entries"]:
+            raise EntryExistsError(f"Запись {name} уже есть")
+        entry = Entry(name, login, encrypt(self._key, pwd))
+        data["entries"][name] = entry.to_dict()
+        self._persist(data)
+
+    def list_entries(self):
+        self._require_unlocked()
+        data = self._load()
+        return sorted(data["entries"].keys())
+
+    def get_entry(self, name):
+        self._require_unlocked()
+        data = self._load()
+        if name not in data["entries"]:
+            raise EntryNotFoundError(f"Запись {name} не найдена")
+        entry = Entry.from_dict(data["entries"][name])
+        try:
+            password = decrypt(self._key, entry.password)
+        except InvalidToken:
+            raise VaultCorruptedError("Не удалось расшифровать запись")
+        return entry.login, password
+
+    def delete_entry(self, name):
+        self._require_unlocked()
+        data = self._load()
+        if name not in data["entries"]:
+            raise EntryNotFoundError(f"Запись {name} не найдена")
+        del data["entries"][name]
+        self._persist(data)

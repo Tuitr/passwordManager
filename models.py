@@ -31,9 +31,9 @@ class Entry:
         self.login = login
         self.password = password
 
-    def toDict(self):
+    def to_dict(self):
         return {"name": self.name, "login": self.login, "password": self.password}
 
     @classmethod
-    def fromDict(cls, data):
+    def from_dict(cls, data):
         return cls(data["name"], data["login"], data["password"])
