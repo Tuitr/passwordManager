@@ -1,7 +1,7 @@
 from errors import PassmanError
 from security import generate_password
 from ui.console import clear, info, success, error, ask, pause
-from ui.password_input import inputPassword
+from ui.password_input import input_password
 from config import GENERATED_PASSWORD_LENGTH
 
 class StartMenu:
@@ -34,8 +34,8 @@ class StartMenu:
     def _init(self):
         clear()
         info("=== Создание хранилища ===")
-        password = inputPassword("Введите мастер пароль: ")
-        password_check = inputPassword("Введите мастер пароль повторно: ")
+        password = input_password("Введите мастер пароль: ")
+        password_check = input_password("Введите мастер пароль повторно: ")
         if password != password_check:
             error("Пароли не совпадают")
             pause()
@@ -52,7 +52,7 @@ class StartMenu:
         clear()
         info("=== Вход ===")
         try:
-            master_password = inputPassword("Введите мастер пароль: ")
+            master_password = input_password("Введите мастер пароль: ")
             if self.manager.unlock(master_password):
                 VaultMenu(self.manager).show()
             else:
@@ -113,7 +113,7 @@ class VaultMenu:
         info("=== Новая запись ===")
         name = ask("Введите название: ")
         login = ask("Введите логин: ")
-        password = inputPassword("Введите пароль (Enter — сгенерировать): ")
+        password = input_password("Введите пароль (Enter — сгенерировать): ")
         if not password:
             password = generate_password()
             info(f"Сгенерирован пароль: {password}")
@@ -140,7 +140,7 @@ class VaultMenu:
         clear()
         info("=== Просмотр пароля ===")
         name = ask("Введите название: ")
-        master = inputPassword("Мастер-пароль: ")
+        master = input_password("Мастер-пароль: ")
         if not self.manager.unlock(master):
             error("Неверный мастер-пароль")
             pause()

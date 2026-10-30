@@ -1,8 +1,8 @@
 import getpass
 
-def inputPassword(prompt):
+def input_password(prompt):
     return getpass.getpass(prompt)
 
 if __name__ == "__main__":
-    password = inputPassword("Password: ")
+    password = input_password("Password: ")
     print(password)
