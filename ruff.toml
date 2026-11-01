@@ -1,0 +1,11 @@
+line-length = 120
+target-version = "py310"
+
+[lint]
+select = [
+    "E",   # pycodestyle: стиль PEP 8
+    "W",   # pycodestyle: предупреждения
+    "F",   # pyflakes: неиспользуемые импорты, неизвестные имена
+    "I",   # isort: порядок импортов
+    "N",   # pep8-naming: snake_case для функций и переменных
+]
