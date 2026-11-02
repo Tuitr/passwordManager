@@ -2,7 +2,7 @@ from manager import PasswordManager
 from ui.menu import StartMenu
 
 
-def main():
+def main() -> None:
     manager = PasswordManager()
     try:
         StartMenu(manager).show()

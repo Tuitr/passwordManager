@@ -19,7 +19,7 @@ REQUIRED_KEYS = ("master", "key_salt", "entries")
 
 
 class PasswordManager:
-    def __init__(self, path=VAULT_FILE):
+    def __init__(self, path=VAULT_FILE) -> None:
         self.path = path
         self._key = None
 
@@ -37,11 +37,11 @@ class PasswordManager:
                 raise VaultCorruptedError("Файл хранилища поврежден")
         return data
 
-    def _persist(self, data):
+    def _persist(self, data) -> None:
         with open(self.path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
-    def init_master(self, password):
+    def init_master(self, password) -> None:
         if self.is_initialized():
             raise MasterExistsError("Хранилище уже создано")
         if len(password) < MIN_MASTER_LENGTH:
@@ -55,7 +55,7 @@ class PasswordManager:
         }
         self._persist(data)
 
-    def unlock(self, password):
+    def unlock(self, password) -> bool:
         if not self.is_initialized():
             raise VaultNotInitializedError("Хранилище не создано, сначала создайте его")
         data = self._load()
@@ -66,14 +66,14 @@ class PasswordManager:
         self._key = derive_key(password, data["key_salt"])
         return True
 
-    def lock(self):
+    def lock(self) -> None:
         self._key = None
 
-    def _require_unlocked(self):
+    def _require_unlocked(self) -> None:
         if self._key is None:
             raise VaultLockedError("Хранилище заблокировано")
 
-    def add_entry(self, name, login, pwd):
+    def add_entry(self, name, login, pwd) -> None:
         self._require_unlocked()
         name = name.strip()
         if not name or not pwd:
@@ -102,7 +102,7 @@ class PasswordManager:
             raise VaultCorruptedError("Не удалось расшифровать запись")
         return entry.login, password
 
-    def delete_entry(self, name):
+    def delete_entry(self, name) -> None:
         self._require_unlocked()
         data = self._load()
         if name not in data["entries"]:

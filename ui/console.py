@@ -1,7 +1,7 @@
 import os
 
 
-def clear():
+def clear() -> None:
     if os.name == "nt":
         os.system("cls")
     else:
@@ -13,15 +13,15 @@ RED = "\033[31m"
 RESET = "\033[0m"  # вернуть обычный цвет
 
 
-def info(text):
+def info(text) -> None:
     print(text)
 
 
-def success(text):
+def success(text) -> None:
     print(f"{GREEN}{text}{RESET}")
 
 
-def error(text):
+def error(text) -> None:
     print(f"{RED}{text}{RESET}")
 
 
@@ -29,5 +29,5 @@ def ask(prompt):
     return input(prompt).strip()
 
 
-def pause():
+def pause() -> None:
     input("\nНажмите Enter, чтобы продолжить...")

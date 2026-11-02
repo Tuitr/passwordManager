@@ -6,10 +6,10 @@ from ui.password_input import input_password
 
 
 class StartMenu:
-    def __init__(self, manager):
+    def __init__(self, manager) -> None:
         self.manager = manager
 
-    def show(self):
+    def show(self) -> None:
         while True:
             clear()
             info("=== Менеджер паролей ===")
@@ -32,7 +32,7 @@ class StartMenu:
                     error("Нет такого пункта")
                     pause()
 
-    def _init(self):
+    def _init(self) -> None:
         clear()
         info("=== Создание хранилища ===")
         password = input_password("Введите мастер пароль: ")
@@ -48,7 +48,7 @@ class StartMenu:
             error(str(e))
         pause()
 
-    def _unlock(self):
+    def _unlock(self) -> None:
         clear()
         info("=== Вход ===")
         try:
@@ -62,7 +62,7 @@ class StartMenu:
             error(str(e))
             pause()
 
-    def _generate(self):
+    def _generate(self) -> None:
         clear()
         info("=== Генератор паролей ===")
         text = ask(f"Длина (Enter — {GENERATED_PASSWORD_LENGTH}): ")
@@ -78,10 +78,10 @@ class StartMenu:
 
 
 class VaultMenu:
-    def __init__(self, manager):
+    def __init__(self, manager) -> None:
         self.manager = manager
 
-    def show(self):
+    def show(self) -> None:
         while True:
             clear()
             info("=== Хранилище паролей ===")
@@ -108,7 +108,7 @@ class VaultMenu:
                     error("Нет такого пункта")
                     pause()
 
-    def _add(self):
+    def _add(self) -> None:
         clear()
         info("=== Новая запись ===")
         name = ask("Введите название: ")
@@ -124,7 +124,7 @@ class VaultMenu:
             error(str(e))
         pause()
 
-    def _list(self):
+    def _list(self) -> None:
         clear()
         info("=== Список записей ===")
         names = self.manager.list_entries()
@@ -135,7 +135,7 @@ class VaultMenu:
                 info(f"{i}. {name}")
         pause()
 
-    def _get(self):
+    def _get(self) -> None:
         clear()
         info("=== Просмотр пароля ===")
         name = ask("Введите название: ")
@@ -153,7 +153,7 @@ class VaultMenu:
         pause()
         clear()
 
-    def _delete(self):
+    def _delete(self) -> None:
         clear()
         info("=== Удаление записи ===")
         name = ask("Введите название: ")

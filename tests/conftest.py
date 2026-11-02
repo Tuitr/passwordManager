@@ -4,7 +4,7 @@ from manager import PasswordManager
 
 
 @pytest.fixture(autouse=True)
-def fast_hashing(monkeypatch):
+def fast_hashing(monkeypatch) -> None:
     monkeypatch.setattr("security.HASH_ITERATIONS", 1000)
 
 
