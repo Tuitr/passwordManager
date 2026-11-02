@@ -6,9 +6,10 @@ import string
 
 from cryptography.fernet import Fernet
 
-from config import HASH_ITERATIONS, GENERATED_PASSWORD_LENGTH
+from config import GENERATED_PASSWORD_LENGTH, HASH_ITERATIONS
 
 SALT_SIZE = 16
+
 
 def _compute_hash(password, salt):
     return hashlib.pbkdf2_hmac(
@@ -45,6 +46,7 @@ def encrypt(key, text):
 
 def decrypt(key, token):
     return Fernet(key).decrypt(token.encode("utf-8")).decode("utf-8")
+
 
 CHAR_GROUPS = (
     string.ascii_lowercase,

@@ -3,8 +3,7 @@ import string
 import pytest
 from cryptography.fernet import InvalidToken
 
-from security import (hash_password, verify_password, generate_salt,
-                      derive_key, encrypt, decrypt, generate_password)
+from security import decrypt, derive_key, encrypt, generate_password, generate_salt, hash_password, verify_password
 
 
 def test_verify_password():

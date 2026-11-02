@@ -2,12 +2,18 @@ import json
 
 from cryptography.fernet import InvalidToken
 
-from config import VAULT_FILE, MIN_MASTER_LENGTH
-from errors import (ValidationError, MasterExistsError, VaultNotInitializedError,
-                    VaultLockedError, VaultCorruptedError,
-                    EntryExistsError, EntryNotFoundError)
+from config import MIN_MASTER_LENGTH, VAULT_FILE
+from errors import (
+    EntryExistsError,
+    EntryNotFoundError,
+    MasterExistsError,
+    ValidationError,
+    VaultCorruptedError,
+    VaultLockedError,
+    VaultNotInitializedError,
+)
 from models import Entry
-from security import hash_password, verify_password, generate_salt, derive_key, encrypt, decrypt
+from security import decrypt, derive_key, encrypt, generate_salt, hash_password, verify_password
 
 REQUIRED_KEYS = ("master", "key_salt", "entries")
 
@@ -16,7 +22,6 @@ class PasswordManager:
     def __init__(self, path=VAULT_FILE):
         self.path = path
         self._key = None
-
 
     def is_initialized(self):
         return self.path.exists()

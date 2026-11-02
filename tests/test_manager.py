@@ -1,6 +1,6 @@
 import pytest
 
-from errors import MasterExistsError, EntryNotFoundError, VaultLockedError
+from errors import EntryNotFoundError, MasterExistsError, VaultLockedError
 
 
 def test_unlock_correct_password(manager):

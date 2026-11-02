@@ -1,8 +1,9 @@
+from config import GENERATED_PASSWORD_LENGTH
 from errors import PassmanError
 from security import generate_password
-from ui.console import clear, info, success, error, ask, pause
+from ui.console import ask, clear, error, info, pause, success
 from ui.password_input import input_password
-from config import GENERATED_PASSWORD_LENGTH
+
 
 class StartMenu:
     def __init__(self, manager):
@@ -46,7 +47,6 @@ class StartMenu:
         except PassmanError as e:
             error(str(e))
         pause()
-
 
     def _unlock(self):
         clear()
@@ -124,7 +124,6 @@ class VaultMenu:
             error(str(e))
         pause()
 
-
     def _list(self):
         clear()
         info("=== Список записей ===")
@@ -153,7 +152,6 @@ class VaultMenu:
             error(str(e))
         pause()
         clear()
-
 
     def _delete(self):
         clear()
